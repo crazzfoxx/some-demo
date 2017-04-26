@@ -1,0 +1,401 @@
+<!-- 
+@description:
+	二维数组map对应位置数值:
+		1:snake
+		0:初始值
+		-1:apple
+
+@upgrade:
+	解决图片转向
+	apple生成位置不能被wall围住
+	wall生成时间
+@bug:
+	方向突变导致重复执行getNewHeadPosition,与未清除
+	body重合,导致卡死; 两次操作间隔不小于500ms
+ -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>js_9</title>
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+			}
+			.container {
+				position: relative;
+				width: 600px;
+				height: 600px;
+				border: 10px solid #666;
+			}
+
+			.container > div {
+				position: absolute;
+				box-sizing: border-box;
+				width: 40px;
+				height: 40px;
+				/*border: 4px solid #ccc;*/
+				border-radius: 50%;
+			}
+			.container > .apple {
+				background: #ff3333;
+			}
+			.container > .snake {
+				background: #00dd00;
+			}
+			.container > .head {
+				overflow: hidden;
+				background: #ee7700;
+			}
+			.container > .head:after {
+				content: ",,";
+
+				display: block;
+
+				width: 40px;
+				height: 40px;
+				font-size: 20px;
+				line-height: 30px;
+				text-align: center;
+			}
+			.container > .wall {
+				background: #666;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container"></div>
+
+		<script>
+			//////////变量声明/////////////////
+			var oContainer = document.getElementsByClassName('container')[0];
+			var aCell = oContainer.getElementsByTagName('div');
+
+			var numOfCol = 15;
+			var map = [];
+			var timer = null;
+
+			//////////执行/////////////////
+			//初始化二维数组
+			initMap(numOfCol);
+
+			//生成oContainer的HTML内容
+			createCell(numOfCol);
+
+			//初始化snake的位置数组
+			snakeArr = [];
+			snakeArr.push([0,Math.floor(numOfCol / 2)]);
+			//初始化map对应snake
+			map[0][Math.floor(numOfCol / 2)] = 1;
+			//初始化运动方向
+			var direction = 'down';
+			//初始化运动速度
+			var speed = 300;
+			var speedChange_OnOff = true;			
+			//初始化显示snake
+			setCell('head',snakeArr[0],'draw',numOfCol);
+
+			//初始化被吃apple数量
+			var appleCount = 0;
+			//初始化apple位置
+			var appleLocation = [];
+			//随机生成苹果
+			createApple(numOfCol);
+
+			//定义wall位置数组
+			var wallArr = [];
+			//初始化wall长度
+			var wallLength = Math.floor(numOfCol / 2);
+			//初始化wall生成方向
+			var dirArr = ['up','down','left','right'];
+			//初始化wall位置
+			initWall(numOfCol,wallLength);
+
+			for (var i=0;i<wallArr.length;i++) {
+				setCell('wall',wallArr[i],'draw',numOfCol);
+			}
+
+			//初始化操作时间
+			var time = +new Date();
+
+			//点击document开始移动
+			document.onclick = function() {
+				moveSnake(snakeArr,numOfCol);
+			};
+
+			//点击方向键改变方向
+			document.onkeydown = function(ev) {
+				var ev = ev || event;
+				
+				var t = +new Date() - time;
+				console.log(t);
+
+				// changeDirection(ev);
+
+				if (t >= Math.ceil(speed / 2)) {
+					changeDirection(ev);
+				}
+
+				time = +new Date();
+			};
+
+			
+
+			//////////函数声明////////////////
+			
+			//生成oContainer的HTML内容生成
+			function createCell(numOfCol) {
+				var str = '';
+				for (var i=0;i<numOfCol*numOfCol;i++) {
+					str += '<div style="left:' + (i % numOfCol) * 40 + 'px;top:'+ Math.floor(i / numOfCol) * 40 + 'px;"></div>';
+				}
+				oContainer.innerHTML = str;
+			}
+			
+			////初始化
+			function initMap(numOfCol) {
+				for (var i=0;i<numOfCol;i++) {
+					map[i] = [];
+					for (var j=0;j<numOfCol;j++) {
+						map[i][j] = 0;
+					}
+				}
+			}
+
+			function initAppleMap(numOfCol) {
+				do {
+					var row = Math.round(Math.random() * (numOfCol - 1));
+					var col = Math.round(Math.random() * (numOfCol - 1));
+				}while(map[row][col] == 1);
+				
+				var cellIndex = row * numOfCol + col;
+
+				return [row,col];
+			}
+
+			function createApple(numOfCol) {
+				//初始化apple位置
+				appleLocation = initAppleMap(numOfCol);
+				//初始化显示apple
+				setCell('apple',appleLocation,'draw',numOfCol);
+			}
+
+			function initWall(numOfCol,wallLength) {
+				//生成第一个wall
+				while (true) {
+					var row = Math.round(Math.random() * (numOfCol - 1));
+					var col = Math.round(Math.random() * (numOfCol - 1));
+
+					if (map[row][col] == 0) {
+						wallArr.push([row,col]);
+						break;
+					}
+				}
+				//生成其他wall
+				while (wallArr.length < wallLength) {
+					//保存旧的row和col
+					var oldRow = row;
+					var oldCol = col;
+
+					//随机生成下一个墙体生成方向
+					var dir = dirArr[Math.floor(Math.random() * 4)];
+
+					switch (dir) {
+						case 'up':
+							row--;
+							break;
+						case 'down':
+							row++;
+							break;
+						case 'left':
+							col--;
+							break;
+						case 'right':
+							col++;
+							break;
+					}
+
+					if (row >= 0 && row < numOfCol
+						&& col >= 0 && col < numOfCol
+						&& map[row][col] == 0) {
+						wallArr.push([row,col]);
+						removeArrRedundant(wallArr);
+					}else {
+						row = oldRow;
+						col = oldCol;
+					}
+				}
+			}
+			////初始化结束
+			
+			////snake运动控制
+			
+			//改变运动方向
+			function changeDirection(ev) {
+				if (ev.keyCode == 38 && direction != 'down') {
+					//上
+					direction = 'up';
+				}else if (ev.keyCode == 40 && direction != 'up') {
+					//下
+					direction = 'down';
+				}else if (ev.keyCode == 37 && direction != 'right') {
+					//左
+					direction = 'left';
+				}else if (ev.keyCode == 39 && direction != 'left') {
+					//右
+					direction = 'right';
+				}
+			}
+
+			//运动
+			function moveSnake(snakeArr,numOfCol) {
+				clearTimeout(timer);
+				if (appleCount % 3 == 0 && appleCount != 0 && speedChange_OnOff) {
+					speed -= 10;
+					speedChange_OnOff = false;
+
+					//清除wall
+					for (var i=0;i<wallArr.length;i++) {
+						setCell('wall',wallArr[i],'clear',numOfCol);
+					}
+
+					//重置wallArr
+					wallArr = [];
+					//增加wall长度
+					wallLength++;
+					//初始化wall位置
+					initWall(numOfCol,wallLength);
+
+					//显示wall
+					for (var i=0;i<wallArr.length;i++) {
+						setCell('wall',wallArr[i],'draw',numOfCol);
+					}
+				}
+
+				var newHeadLocation = getNewHeadLocation(snakeArr[0],direction,numOfCol);
+
+				if (newHeadLocation) {
+					AddSnake(appleLocation,snakeArr[0],newHeadLocation,numOfCol);
+
+					for (var i=0;i<snakeArr.length;i++) {
+						setCell('snake',snakeArr[i],'clear',numOfCol);
+					}
+
+					headLocation = newHeadLocation;
+					snakeArr.pop();
+					snakeArr.unshift(headLocation);
+
+					for (var i=0;i<snakeArr.length;i++) {
+						setCell('snake',snakeArr[i],'draw',numOfCol);
+					}
+					setCell('head',snakeArr[0],'draw',numOfCol);
+
+					timer = setTimeout(function() {
+						moveSnake(snakeArr,numOfCol);
+					},speed);
+				}else {
+					console.log('你输了');
+				}
+			}
+
+			//如果吃掉苹果,增加snake长度
+			function AddSnake(appleLocation,headLocation,newHeadLocation,numOfCol) {
+				if (appleLocation.toString() === headLocation.toString()) {
+					appleCount++;
+					speedChange_OnOff = true;
+					snakeArr.unshift(headLocation);
+					createApple(numOfCol);
+				}
+
+			}
+
+			//获得新的head位置
+			//判断失败条件
+			function getNewHeadLocation(currentHeadLocation,currentDirection,numOfCol) {
+				var row = currentHeadLocation[0];
+				var col = currentHeadLocation[1];
+
+				switch (currentDirection) {
+					case 'up':
+						if (row == 0) {
+							return false;
+						}else {
+							row--;
+							break;
+						}
+					case 'down':
+						if (row == numOfCol - 1) {
+							return false;
+						}else {
+							row++;
+							break;
+						}
+					case 'left':
+						if (col == 0) {
+							return false;
+						}else {
+							col--;
+							break;
+						}
+					case 'right':
+						if (col == numOfCol - 1) {
+							return false;
+						}else {
+							col++;
+							break;
+						}
+					default:;
+				}
+
+				if (map[row][col] == 1 || map[row][col] == -2) {
+					return false;
+				}
+
+				return [row,col];
+			}
+
+			////universal function
+			
+			//显示或清除apple或snake
+			//修改map值
+			function setCell(cellType,location,mode,numOfCol) {
+				var row = location[0];
+				var col = location[1];
+				var cellIndex = row * numOfCol + col;
+
+				if (mode == 'draw') {
+					aCell[cellIndex].className = cellType;
+					switch (cellType) {
+						case 'snake':
+							map[row][col] = 1;
+							break;
+						case 'apple':
+							map[row][col] = -1;
+							break;
+						case 'wall':
+							map[row][col] = -2;
+							break;
+					}
+				}else if (mode == 'clear') {
+					aCell[cellIndex].className = '';
+					map[row][col] = 0;
+				}
+			}
+
+			//arr去重
+			//arr[i]是数组
+			function removeArrRedundant(arr) {
+				for (var i=0;i<arr.length;i++) {
+					for (var j=i+1;j<arr.length;j++) {
+						if (arr[i].toString() === arr[j].toString()) {
+							arr.splice(j,1);
+							j--;
+						}
+					}
+				}
+			}
+
+		</script>
+	</body>
+</html>

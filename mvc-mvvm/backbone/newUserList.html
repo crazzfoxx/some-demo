@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>backbone</title>
+    <style type="text/css">
+        /* css reset */
+        body,ul {
+            margin: 0;
+            padding: 0;
+        }
+        li { list-style: none; }
+        * { box-sizing: border-box; }
+
+        .clearfix {
+            *zoom: 1;
+        }
+        .clearfix:before {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        /* #userInfo */
+        #userInfo {
+            overflow: hidden;
+            width: 80%;
+            margin: 0 auto;
+            background: #ccc;
+        }
+        .addUser {
+            width: 95%;
+            heihgt: 40px;
+            margin: 10px auto;
+            border: 1px solid #222;
+            font: 16px/40px "Microsoft Yahei";
+            text-align: center;
+            cursor: pointer;
+        }
+        .addUser > input[type="text"] {
+            display: none;
+            width: 100%;
+            height: 40px;
+            padding: 10px;
+            font: 16px/40px "Microsoft Yahei";
+        }
+        .addUser > input[type="text"]::-webkit-input-placeholder {
+            font-style: italic;
+        }
+        .edit > .add {
+            display: none;
+        }
+        .edit > input[type="text"] {
+            display: block;
+        }
+
+        .userList {
+            width: 95%;
+            margin: 0 auto 10px;
+        }
+        .userList .info {
+            width: 100%;
+            height: 40px;
+            padding: 0 10px;
+            font: 16px/40px "Microsoft Yahei";
+        }
+        .userList .info .content {
+            float: left;
+        }
+        .userList .info .del {
+            float: right;
+            color: #ff0000;
+            cursor: pointer;
+        }
+        .userList .info:hover {
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="userInfo">
+        <div class="addUser">
+            <div class="add">新增用户</div>
+            <input class="input" type="text" placeholder="请输入用户名">
+        </div>
+        <ul class="userList"></ul>
+    </div>
+
+    <script src="scripts/jquery-3.1.1.js"></script>
+    <script src="scripts/json2.js"></script>
+    <script src="scripts/underscore.js"></script>
+    <script src="scripts/backbone.js"></script>
+    <script src="scripts/backbone.localStorage.js"></script>
+
+    <!-- template -->
+    <script id="info-template" type="text/template">
+        <div class="content"><%- order %> : <%- username %></div>
+        <div class="del">删除</div>
+    </script>
+
+    <script>
+        var Info = Backbone.Model.extend({
+            default: function() {
+                return {
+                    username: 'empty username...',
+                    order: 0
+                }
+            }
+        });
+
+        var Infos = Backbone.Collection.extend({
+            model: Info,
+
+            localStorage: new Backbone.LocalStorage("infos-backbone"),
+
+            comparator: function(a, b) {
+                console.log(b.get('order'), a.get('order'))
+                return b.get('order') - a.get('order');
+            }
+        });
+
+        // 实例化Infos
+        var infos = new Infos();
+
+        var InfoView = Backbone.View.extend({
+            tagName: 'li',
+            className: 'info clearfix',
+
+            template: _.template($('#info-template').html()),
+
+            events: {
+                'click .content': 'change',
+                'click .del' : 'delete'
+            },
+
+            initialize: function() {
+                this.listenTo(this.model, 'destroy', this.remove);
+                this.listenTo(this.model, 'change', this.render);
+            },
+
+            render: function() {
+                this.$el.html(this.template(this.model.toJSON()));
+                return this;
+            },
+
+            change: function() {
+                var newUsername = prompt('请输入新用户名?');
+                if (!newUsername) return;
+                this.model.save({username: newUsername});
+            },
+
+            delete: function() {
+                this.model.destroy();
+            }
+        });
+
+        var AppView = Backbone.View.extend({
+            el: $('#userInfo'),
+
+            events: {
+                'click .add': 'edit',
+                'keypress .input': 'close',
+            },
+
+            initialize: function() {
+                this.listenTo(infos, 'add', this.appendOne);
+
+                this.add = this.$el.find('.add:eq(0)');
+                this.input = this.$el.find('.input:eq(0)');
+
+                infos.fetch();
+            },
+
+            render: function() {
+
+            },
+
+            edit: function() {
+                this.$el.find('div.addUser:eq(0)').addClass('edit');
+                this.input.focus();
+            },
+
+            close: function(ev) {
+                if (ev.keyCode != 13) return;
+                if (!this.input.val()) return;
+
+                infos.create({
+                    username: this.input.val(),
+                    order: infos.length + 1
+                });
+                this.input.val('');
+                this.$el.find('div.addUser:eq(0)').removeClass('edit');
+            },
+
+            appendOne: function(info) {
+                var infoView = new InfoView({model: info});
+                this.$el.find('.userList:eq(0)').append(infoView.render().el);
+            }
+        });
+
+        var appView = new AppView();
+    </script>
+</body>
+</html>

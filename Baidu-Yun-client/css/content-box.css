@@ -1,0 +1,579 @@
+#content-box {
+	position: absolute;
+	left: 193px;
+	top: 62px;
+	width: 85%;
+	min-width: 880px;
+	height: 552px;
+	border: 1px solid #d8dfea;
+	border-radius: 4px;
+	background: #fff;
+}
+
+/*.content-header*/
+.content-header {
+	overflow: hidden;
+	padding: 15px;
+	padding-bottom: 0;
+}
+.content-header > span {
+	float: left;
+	min-width: 100px;
+}
+.content-header > span,
+.drop > span {
+	display: block;
+	width: auto;
+	height: 34px;
+	padding: 0 14px;
+	margin-right: 10px;
+	border: 1px solid #d8dfea;
+	border-radius: 4px;
+	font: 13px/32px "Microsoft Yahei";
+	text-align: center;
+	color: #3b8cff;
+	cursor: pointer;
+}
+.content-header > span > i {
+	margin-right: 4px;
+}
+.content-header .content-upload {
+	position: relative;
+	background: #3b8cff;
+	color: #fff;
+}
+.content-header .content-device {
+	position: relative;
+}
+.content-header .drop {
+	display: none;
+	position: absolute;
+	top: 33px;
+	left: 0;
+	z-index: 997;
+	width: 100%;
+	border: 1px solid #d8dfea;
+	border-top: 0;
+	border-radius: 0 0 4px 4px;
+	color: #3b8cff;
+	background: #fff;
+}
+
+.content-op {
+	display: none;
+	float: left;
+	height: 34px;
+	border: 1px solid #d8dfea;
+	border-radius: 4px;
+}
+.content-op > span {
+	float: left;
+	height: 100%;
+	padding: 0 11px 0 14px;
+	font: 13px/34px "Microsoft Yahei";
+	text-align: center;
+	color: #3b8cff;
+	cursor: pointer;
+}
+.content-op > span:not(:last-of-type) {
+	border-right: 1px solid #d8dfea;
+}
+.content-op > span > i {
+	margin-right: 4px;
+}
+
+.content-op .op-inactive {
+	color: #9dc5ff;
+}
+
+.content-search {
+	position: relative;
+	float: right;
+	width: 100px;
+	height: 36px;
+	padding: 0 16px 0 39px;
+	border: 1px solid #ccc;
+	border-radius: 18px;
+	background: #fff;
+	transition: .5s;
+}
+.content-search > strong {
+	position: absolute;
+	top: 8px;
+	left: 14px;
+	width: 18px;
+	height: 18px;
+}
+.content-search:hover {
+	border-color: #3b8cff;
+}
+.content-search:hover > strong {
+	color: #3b8cff;
+}
+.content-search > input {
+	width: 100%;
+	height: 100%;
+	font: 16px/36px "Microsoft Yahei";
+	outline: none;
+}
+
+.content-display,
+.content-sort {
+	overflow: hidden;
+	float: right;
+	width: 97px;
+	height: 36px;
+	border: 1px solid #ccc;
+	border-radius: 18px;
+	margin-left: 20px;
+}
+.content-display > span,
+.content-sort > span {
+	position: relative;
+	float: left;
+	width: 50%;
+	height: 100%;
+	cursor: pointer;
+}
+.content-display > span:first-of-type,
+.content-sort > span:first-of-type {
+	border-radius: 18px 0 0 18px;
+}
+.content-display > span:last-of-type,
+.content-sort > span:last-of-type {
+	border-radius: 0 18px 18px 0;
+}
+
+.content-display > .active,
+.content-sort > .active {
+	background: #eeeef2;
+}
+.content-display > span strong,
+.content-sort > span strong {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 20px;
+	height: 20px;
+	margin-left: -9px;
+	margin-top: -9px;
+	background: url(../images/sprite.png) no-repeat;
+	background-size: 1006px 984px;
+}
+.content-display > span:first-of-type strong {
+	background-position:  -462px -874px;
+}
+.content-display > span:last-of-type strong {
+	background-position:  -486px -874px;
+}
+.content-sort > span:first-of-type strong {
+	background-position:  -512px -874px;
+}
+.content-sort > span:last-of-type strong {
+	background-position:  -536px -874px;
+}
+
+/*.content-header*/
+
+/*.content-info*/
+.content-info {
+	overflow: hidden;
+	width: 100%;
+	height: 71px;
+	padding: 15px 20px 10px 20px;
+	border-bottom: 1px solid #f5f6fa;
+}
+
+.content-info > span {
+	height: 12px;
+	margin-bottom: 21px;
+	font: 12px/12px "Microsoft Yahei";
+}
+
+.content-info .backwards,
+.content-info .path {
+	float: left;
+	cursor: pointer;
+}
+.content-info .path > span:not(:last-of-type) {
+	color: #3b8cff;
+}
+
+.content-info .backwards {
+	display: none;
+}
+.content-info .load {
+	float: right;
+}
+
+.content-info .checkall {
+	clear: left;
+	float: left;
+	width: auto;
+	height: 14px;
+}
+.content-info .check-btn,
+.content-info .check-btn-active {
+	float: left;
+	width: 14px;
+	height: 14px;
+	border: 1px solid #ccc;
+	border-radius: 50%;
+}
+.content-info .check-btn-active {
+	padding: 1px 0 0 1px;
+	background: #3b8cff;
+	color: #fff;
+}
+.content-info .check-btn-active:before {
+	content: "✔";
+}
+
+.content-info .check-text {
+	float: left;
+	padding-left: 13px;
+	height: 12px;
+}
+
+.content-info .recover,
+.content-info .clearall {
+	display: none;
+	float: left;
+	min-width: 71px;
+	height: 30px;
+	padding: 0 10px;
+	margin: -10px 0 0 14px;
+	border: 1px solid #daebfe;
+	border-radius: 4px;
+	font: 12px/30px "Microsoft Yahei";
+	text-align: center;
+	color: #3b8cff;
+	cursor: pointer;
+}
+.content-info .recover > i,
+.content-info .clearall > i {
+	margin-right: 4px;
+}
+/*.content-info*/
+
+
+/*.content*/
+.content {
+	overflow: auto;
+	position: relative;
+	width: 100%;
+	height: 400px;
+	padding: 7px;
+}
+/*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
+.content::-webkit-scrollbar {
+	width: 8px;
+	height: auto;
+}
+/*定义滚动条的轨道，内阴影及圆角*/
+.content::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    border-radius: 10px;
+    background-color: #f5f6f9;
+}
+/*定义滑块，内阴影及圆角*/
+.content::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #d8dce5;
+}
+
+/*///////////content-icon模式//////////////////*/
+
+.content-icon .item {
+	float: left;
+	position: relative;
+	z-index: 2;
+	width: 122px;
+	height: 128px;
+	margin: 0 5px 5px 0;
+	border-radius: 4px;
+	background: #fff;
+}
+.content-icon .item:hover,
+.content-icon .item-active {
+	background: rgba(173,216,230,.4);
+}
+.content-icon .item-active {
+	outline: 1px solid #90c3fd;
+}
+
+.content-icon .item > dt {
+	position: relative;
+	width: 100%;
+	height: 80px;
+}
+.content-icon .item > dt > div{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 66px;
+	height: 66px;
+	margin-top: -20px;
+	margin-left: -33px;
+	background: url(../images/sprite.png) no-repeat;
+}
+.content-icon .item > dd {
+	overflow: hidden;
+	width: 100%;
+	height: 48px;
+	font: 12px/48px "Microsoft Yahei";
+	text-align: center;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: #000;
+}
+
+.content-icon .item > span {
+	display: none;
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	font: 16px/20px "Microsoft Yahei";
+	text-align: center;
+	background: #b0d1ff;
+}
+
+.content-icon .item > span:before {
+	content: "✔";
+	color: #fff;
+}
+
+.content-icon .item > .checkbox-active {
+	background: #3b8cff;
+}
+
+.content-icon .content-list-op,
+.content-icon .content-list-size,
+.content-icon .content-list-time {
+	display: none;
+}
+
+/*///////////content-icon模式//////////////////*/
+
+/*///////////content-list模式//////////////////*/
+.content-list {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	 		user-select: none;
+}
+.content-list .item {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	height: 56px;
+	border-bottom: 1px solid #f1f2f4;
+	background: #fff;
+}
+.content-list .item:hover,
+.content-list .item-active {
+	background: rgba(173,216,230,.4);
+}
+.content-list .item > dt {
+	position: absolute;
+	top: 0;
+	left: 27px;
+	width: 58px;
+	height: 56px;
+}
+.content-list .item > dt > div{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 32px;
+	height: 34px;
+	margin-left: -16px;
+	margin-top: -17px;
+	background: url(../images/sprite.png) no-repeat;
+	background-size: 1006px 984px;
+}
+.content-list .item > dd {
+	position: absolute;
+	left: 74px;
+	top: 0;
+	overflow: hidden;
+	width: 200px;
+	height: 56px;
+	padding-left: 7px;
+	font: 12px/56px "Microsoft Yahei";
+	text-align: left;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: #000;
+}
+
+.content-list .item > span {
+	position: absolute;
+	top: 21px;
+	left: 13px;
+	width: 14px;
+	height: 14px;
+	border: 1px solid #ccc;
+	border-radius: 50%;
+	font: 16px/20px "Microsoft Yahei";
+	text-align: center;
+}
+
+.content-list .item > .checkbox-active:before {
+	content: "✔";
+	text-align: center;
+}
+
+.content-list .item > .checkbox-active {
+	padding: 1px 0 0 0;
+	font: 12px/12px "Microsoft Yahei";
+	background: #3b8cff;
+	color: #fff;
+}
+
+.content-list .content-list-op,
+.content-list .content-list-size,
+.content-list .content-list-time {
+	position: absolute;
+	top: 0;
+	height: 56px;
+	padding: 20px 0;
+	font: 12px/16px "Microsoft Yahei";
+}
+.content-list .content-list-op {
+	display: none;
+	right: 302px;
+	width: 200px;
+}
+.content-list .content-list-op > span {
+	float: left;
+	width: 16px;
+	height: 17px;
+	cursor: pointer;
+}
+.content-list .content-list-op > span:not(:last-of-type) {
+	margin-right: 30px;
+}
+.content-list .content-list-size {
+	width: 91px;
+	right: 201px;
+	text-align: right;
+}
+.content-list .content-list-time {
+	width: 181px;
+	right: 20px;
+	text-align: center;
+}
+
+/*///////////content-list模式//////////////////*/
+
+.content .choose {
+	position: absolute;
+	z-index: 100;
+	outline: 2px solid #3b8cff;
+	background: rgba(173,216,230,.4);
+}
+
+.content .nofile {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 270px;
+	height: 220px;
+	margin-left: -120px;
+	margin-top: -110px;
+	text-align: center;
+}
+
+.content .nofile > img {
+	width: 50%;
+	margin: 0 auto;
+}
+.content .nofile > p {
+	width: 100%;
+	padding: 8px 0;
+	color: #abafb8;
+}
+.content .nofile > p:first-of-type {
+	margin-top: 10px;
+	font: 23px/39px "Microsoft Yahei";
+}
+.content .nofile > p:last-of-type {
+	font: 19px/32px "Microsoft Yahei";
+}
+.content .nofile a {
+	font: 19px/32px "Microsoft Yahei";
+	text-decoration: none;
+	color: #7787c3;
+}
+/*.content*/
+
+/*.rename-box*/
+.rename-box {
+	display: none;
+	position: absolute;
+	top: 119px;
+	z-index: 99;
+	width: 100%;
+	height: 430px;
+}
+.rename-box .rename {
+	position: absolute;
+	width: 138px;
+	height: 24px;
+}
+.rename-box .rename > input {
+	float: left;
+	width: 83px;
+	height: 100%;
+	padding-left: 4px;
+	font: 12px/23px "Microsoft Yahei";
+	border-radius: 2px;
+	background: #fff;
+}
+.rename-box .rename > span {
+	float: right;
+	width: 24px;
+	height: 24px;
+	border: 1px solid #bbd6fb;
+	border-radius: 3px;
+	margin-left: 2px;
+	text-align: center;
+	color: #3b8cff;
+	background: rgba(173,216,230,1);
+	cursor: pointer;
+}
+/*.rename-box*/
+
+/*.rightclick-menu*/
+.rightclick-menu {
+	position: absolute;
+	z-index: 995;
+	display: none;
+	width: 114px;
+	height: auto;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-shadow: 2px 2px 10px 1px rgba(0,0,0,.4);
+	background: #fff;
+}
+.rightclick-menu li {
+	width: 100%;
+	padding: 10px 0;
+	font-size: 12px;
+	font-family: "Microsoft Yahei";
+	text-align: center;
+	cursor: pointer;
+}
+.rightclick-menu li:nth-of-type(2n) {
+	margin-top: -10px;
+	border-bottom: 1px solid #ccc;
+}
+.rightclick-menu li:hover {
+	color: #fff;
+	background: #4281f4;
+}
+/*.rightclick-menu*/

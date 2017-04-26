@@ -1,0 +1,19 @@
+html,body,#wrap {
+	width: 100%;
+	height: 100%;
+}
+#wrap {
+	position: relative;
+	min-width: 900px;
+	background: #eff4f8;
+	color: #424e67;
+	background-size: 100%;
+}
+
+input {
+	width: 80%;
+	height: 20px;
+	font: 12px/20px "Microsoft Yahei";
+	outline: 1px solid #3b8cff;
+}
+

@@ -1,0 +1,68 @@
+.event-layer {
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 199;
+	background: rgba(0,0,0,.6);
+}
+
+.event-box {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 600px;
+	height: 600px;
+	margin: -300px 0 0 -300px;
+	border-radius: 20px;
+	background: url(../images/event/event-box-bg1.png) no-repeat;
+} 
+.event-box > .event-show {
+	position: absolute;
+	top: 29px;
+	left: 39px;
+	width: 67%;
+	height: 30%;
+	opacity: 1;
+}
+.event-box > .text {
+	overflow: auto;
+	position: absolute;
+	top: 218px;
+	left: 39px;
+	width: 67%;
+	height: 30%;
+	font: 16px/20px SimHei;
+	color: #000;
+}
+.event-box > .text > strong {
+	font-weight: 700;
+	color: #b92672;
+}
+
+.event-box > .event-confirm,
+.event-box > .event-leave,
+.event-box > .event-refuse {
+	position: absolute;
+	left: 74px;
+	top: 410px;
+	width: 343px;
+	height: 35px;
+	font: 20px/35px SimHei;
+	text-align: center;
+	color: #000;
+	cursor: pointer;
+}
+.event-box > .event-leave {
+	top: 460px;
+}
+.event-box > .event-refuse {
+	top: 510px;
+}
+.event-box > .event-confirm:hover,
+.event-box > .event-leave:hover,
+.event-box > .event-refuse:hover {
+	outline: 4px solid orange;
+}

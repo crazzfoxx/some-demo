@@ -1,0 +1,682 @@
+<!--
+	扫雷规则:
+	鼠标左键点击打开方格;
+
+	方格中的数字表示周围8个方格雷数;
+
+	如果打开的格子周围有0个雷,则周围的格子自动打开
+	且引发连锁反应;
+
+	在认为有雷的格子上右击标记雷;
+
+	*如果一个已经打开的格子周围所有雷正确标记,则可以
+	在此格子上同时点击左右键打开周围剩余无雷格;
+
+	任一格左点击后无法再次点击;
+
+	右点击一次,插旗子;右点击两次,插问号;
+
+	得分规则:
+		点开一般格得1分
+		点开0格得3分
+		点开雷减5分
+		随倒计时每秒减1分
+ -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>js_14</title>
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+			}
+			li {
+				list-style: none;
+			}
+			img {
+				border: none;
+				outline: none;
+			}
+
+			body {
+				position: relative;
+				background: #666;
+				-webkit-user-select: none;
+				   -moz-user-select: none;
+						user-select: none;
+			}
+
+			#container {
+				position: absolute;
+				left: 50px;
+				top: 50px;
+				width: 501px;
+				height: 322px;
+				margin: 50px 0  0 50px;
+				border-left: 3px solid #fff;
+				border-top: 3px solid #fff;
+
+				background: #c5c3c6;
+			}
+
+			.header {
+				position: relative;
+				box-sizing: border-box;
+
+				width: 486px;
+				height: 37px;
+				margin: 9px auto 0;
+    			border-left: 2px solid #828d93;
+				border-top: 2px solid #828d93;
+				border-right: 2px solid #fff;
+				border-bottom: 2px solid #fff;
+
+    			background: #c5c3c6;
+			}
+			.header > .score,
+			.header > .time {
+				box-sizing: border-box;
+				position: absolute;
+				top: 4px;
+
+				width: 41px;
+				height: 25px;
+				padding-left: 1px;
+				border-left: 2px solid #828d93;
+				border-top: 2px solid #828d93;
+				border-right: 2px solid #fff;
+				border-bottom: 2px solid #fff;
+
+				background: #000;
+			}
+			.header > .score {
+				left: 7px;
+			}
+			.header > .time {
+				right: 7px;
+			}
+			.header > .face {
+				position: absolute;
+				top: 4px;
+				left: 50%;
+				width: 25px;
+				height: 25px;
+				background: url(mine_images/1.ico) no-repeat;
+				background-size: 25px 25px;
+			}
+
+			.score > img,
+			.time > img {
+				float: left;
+				width: 12px;
+				height: 21px;
+			}
+
+			.minefield {
+				position: relative;
+				width: 225px;
+				height: 225px;
+				margin: 20px auto 0;
+				border-left: 2px solid #828d93;
+				border-top: 2px solid #828d93;
+				border-right: 2px solid #fff;
+				border-bottom: 2px solid #fff;
+			}
+			.minefield > div {
+				position: absolute;
+				width: 25px;
+				height: 25px;
+				background: url(mine_images/blank.bmp) no-repeat;
+				font-size: 20px;
+				line-height: 25px;
+				text-align: center;
+				color: #fff;
+			}
+
+			.menu {
+				position: absolute;
+				display: none;
+				top: 0;
+				left: 0;
+				width: 100px;
+				height: 120px;
+				border-left: 2px solid #fff;
+				border-top: 2px solid #fff;
+				border-right: 2px solid #828d93;
+				border-bottom: 2px solid #828d93;
+				background: #c5c3c6;
+			}
+			.menu > li{
+				box-sizing: border-box;
+				width: 100px;
+				height: 30px;
+				font-size: 16px;
+				font-family: "Microsoft Yahei";
+				line-height: 30px;
+				text-align: center;
+				border-bottom: 1px solid #828d93;
+				border-top: 1px solid #fff;
+				color: #000;
+				cursor: pointer;
+			}
+			.menu > li:first-of-type {
+				border-top: none;
+				cursor: default;
+				background: #666;
+			} 
+			.menu > li:last-of-type {
+				border-bottom: none;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<div class="header">
+				<div class="score">
+					<img src="mine_images/d0.bmp">
+					<img src="mine_images/d0.bmp">
+					<img src="mine_images/d0.bmp">
+				</div>
+				<div class="face">
+					<img>
+				</div>
+				<div class="time">
+					<img src="mine_images/d0.bmp">
+					<img src="mine_images/d0.bmp">
+					<img src="mine_images/d0.bmp">
+				</div>
+			</div>
+			<div class="minefield"></div>
+		</div>
+		<div class="menu">
+			<li>[Difficulty]</li>
+			<li>~Easy~</li>
+			<li>~Medium~</li>
+			<li>~Hard~</li>
+		</div>
+		
+		<!-- <script src="../js_library/miaov_getStyle.js"></script>
+		<script src="../js_library/miaov_shakeObj.js"></script> -->
+		<script src="../js_library/miaov_css.js"></script>
+		<script>
+			window.onload = function() {
+				///////////变量声明////////////////
+				var oContainer = document.getElementById('container');
+				var oHeader = oContainer.getElementsByClassName('header')[0];
+				var oMineField = oContainer.getElementsByClassName('minefield')[0];
+				
+				var oScore = oHeader.getElementsByClassName('score')[0]; 
+				var oFace = oHeader.getElementsByClassName('face')[0];
+				var oTime = oHeader.getElementsByClassName('time')[0];
+
+				var aImg_score = oScore.getElementsByTagName('img');
+				var aImg_time = oTime.getElementsByTagName('img');
+				//////////菜单操作///////////////
+				var oMenu = document.getElementsByClassName('menu')[0];
+				var aLevel = oMenu.getElementsByTagName('li');
+				var numOfCol;
+
+				document.oncontextmenu = doNothing;
+
+				document.onmousedown = function(ev) {
+					var ev = ev || event;
+					var btnNum = ev.button;
+
+					if(btnNum == 2) {
+						oMenu.style.display = 'block';
+						oMenu.style.left = ev.clientX + 'px';
+						oMenu.style.top = ev.clientY + 'px';
+					}
+				};
+
+				oMenu.onmouseout = function() {
+					this.style.display = '';
+				};
+
+				oMenu.onmouseover = function() {
+					this.style.display = 'block';
+				};
+
+				numOfCol = resize_Container_Header_MineField(9);
+				mine(numOfCol);
+
+				for (var i=0;i<aLevel.length;i++) {
+					aLevel[i].index = i;
+
+					aLevel[i].onclick = function() {
+						switch (this.index) {
+							case 1: 
+								numOfCol = resize_Container_Header_MineField(9);
+								mine(numOfCol);
+								break;
+							case 2: 
+								numOfCol = resize_Container_Header_MineField(13);
+								mine(numOfCol);
+								break;
+							case 3: 
+								numOfCol = resize_Container_Header_MineField(19);
+								mine(numOfCol);
+								break;
+							default:;
+						}
+					};
+				}
+
+				function mine(numOfCol) {
+					///////////////变量声明/////////////////////
+					var aCell = oMineField.getElementsByTagName('div');
+					
+					//////////初始化映射布尔数组///////////
+					var map;
+					initMap(numOfCol);
+
+					/////////////生成div网格样式//////////////
+					var str = '';
+					for (var i=0;i<numOfCol*numOfCol;i++) {
+						str += '<div style="left:' + (i % numOfCol) * 25 + 'px;top:' + Math.floor(i / numOfCol) * 25+'px;"></div>';
+					} 
+					oMineField.innerHTML = str;
+
+					///////////resize minefield & container//////////////////
+					resize_Container_Header_MineField(numOfCol);
+
+					//////////初始化地雷///////////
+					initMine(parseInt(numOfCol*numOfCol/4),map);
+					// drawMap(map);
+					
+					/////////////执行游戏//////////////////
+					
+					//初始化时间
+					var total_time = 999;
+					//初始化得分
+					var total_score = 000;
+					//初始化其定时器
+					var timer;
+
+					//初始化得分和时间显示
+					initScoreTime();
+					//倒计时开始
+					countDown();
+
+					//初始化要打开cell数组
+					var openArr = [];
+					//初始化已打开cell数组
+					var openedArr = [];
+
+					for (var i=0;i<aCell.length;i++) {
+						aCell[i].index = i;
+						aCell[i].isLeftClicked = false;
+						aCell[i].rightClickTime = 0;
+
+						aCell[i].onmousedown = function(ev) {
+							var ev = ev || event;
+							var btnNum = ev.button;
+
+							ev.cancelBubble = true;
+
+							if (!this.isLeftClicked) {
+								if (btnNum == 0) {
+									this.isLeftClicked = true;
+									openArr = [];
+									//计算方格对应的行和列
+									var row = Math.floor(this.index / map.length);
+									var col = this.index % map.length;
+
+									var len = map.length;
+
+									if (map[row][col]) {
+									//选中地雷
+										openedArr.push(this.index);
+										this.style.background = 'url(mine_images/mine.bmp) no-repeat';
+										//点击地雷减5分
+										getNewScore(-5);
+										//显示得分
+										displayScore();
+										//oFace显示失败状态
+										changeFace(6);
+
+										// shakeObj(oContainer,'left');
+									}else {
+									//当前选中不是地雷
+									
+										//oFace显示笑脸
+										changeFace(1);
+										//打开方格
+										openCell(this.index,map);
+									}
+								}else if (btnNum == 2) {
+									if (this.rightClickTime == 0) {
+										this.style.background = 'url(mine_images/flag.bmp) no-repeat';
+									}else if (this.rightClickTime == 1) {
+										this.style.background = 'url(mine_images/ask.bmp) no-repeat';
+									}else {
+										this.style.background = '';
+										this.rightClickTime = -1;
+									}
+
+									this.rightClickTime++;
+
+									this.ifRightClick = !this.ifRightClick;
+								}
+							}
+						};
+					}
+
+					oFace.onclick = function() {
+						changeFace(Math.ceil(Math.random()*5));
+					};
+
+					///////////////函数声明/////////////////////
+					
+					////计时计分
+					//实现右上角倒计时
+					function initScoreTime() {
+						var time_str = total_time + '';
+						var score_str = total_score + '';
+
+						for (var i=0;i<time_str.length;i++) {
+							aImg_time[i].src = 'mine_images/d9.bmp';
+						}
+
+						for (var i=0;i<score_str.length;i++) {
+							aImg_score[i].src = 'mine_images/d0.bmp';
+						}
+
+					}
+
+					function countDown() {
+						var time_str = fixThree(total_time);
+
+						timer = setInterval(function() {
+							total_time--;
+
+							//倒计时减分
+							getNewScore(-1);
+							//显示得分
+							displayScore();
+							
+							if(total_time == 0) {
+								clearInterval(timer);
+							}
+
+							var time_str = total_time + '';
+							for (var i=0;i<time_str.length;i++) {
+								aImg_time[i].src = 'mine_images/d' + time_str.charAt(i) + '.bmp';
+							}
+						},1000);
+					}
+
+					//计算新得分
+					function getNewScore(scoregot) {
+						total_score += scoregot;
+						if (total_score <= 0) {
+							total_score = 0;
+						}
+					}	
+
+					//显示得分
+					function displayScore() {
+						var score_str = fixThree(total_score);
+						// console.log(score_str);
+
+						for (var i=0;i<score_str.length;i++) {
+							aImg_score[i].src = 'mine_images/d' + score_str.charAt(i) + '.bmp';
+						}
+					}
+					////计时计分结束
+
+					////初始化地图
+					//初始化布尔地图
+					function initMap(numOfCol) {
+						map = new Array();
+						for (var i=0;i<numOfCol;i++) {
+							map[i] = new Array();
+							for (var j=0;j<numOfCol;j++) {
+								map[i][j] = false;
+							}
+						}
+					}
+
+					//判断元素是否在数组中
+					function notInArrCheck(ele,arr) {
+						for (var i=0;i<arr.length;i++) {
+							if (arr[i] == ele) {
+								return false;
+							}
+						}
+						return true;
+					}
+
+					//初始化地雷位置
+					function initMine(numOfMine,map) {
+						var arr = [];
+						var len = map.length;
+
+						while (arr.length < numOfMine) {
+							var row = Math.round((Math.random()*(len-1)+Math.random()*(len-1)) / 2);
+							var col = Math.round((Math.random()*(len-1)+Math.random()*(len-1)) / 2);
+							var i = row * len + col;
+							if (notInArrCheck(i,arr)) {
+								arr.push(i);
+								map[row][col] = true;
+							}
+						}
+					}
+					////初始化地图结束
+
+
+					//计算周围方格隐藏雷数量
+					function countMineNearby(cellIndexArr,map) {
+						var len = map.length;
+						var numOfMine = 0;
+
+						for (var i=0;i<cellIndexArr.length;i++) {
+							var row = Math.floor(cellIndexArr[i] / len);
+							var col = cellIndexArr[i] % len;
+
+							if (map[row][col]) {
+								numOfMine++;
+							}
+						}
+
+						return numOfMine;
+					}
+
+					//打开非地雷方格
+					function openCell(cellIndex,map) {
+						openedArr.push(cellIndex);
+						openedArr = removeArrRedundant(openedArr);
+
+						console.log(openedArr.length,map.length * map.length);
+						if (openedArr.length == map.length * map.length) {
+							clearInterval(timer);
+							showPic();
+						}
+
+						//获得方格周围8格的索引值
+						var cellIndexArr = createCellIndexArr(cellIndex,map.length);
+
+						//计算隐藏雷数量
+						var num = countMineNearby(cellIndexArr,map);
+						// aCell[cellIndex].innerHTML = num;
+						aCell[cellIndex].style.background = 'url(mine_images/' + num + '.bmp) no-repeat'
+
+						if (num == 0) {
+							//若周围有0个雷,得3分
+							getNewScore(3);
+							//生成新的要打开cell数组
+							openArr = openArr.concat(cellIndexArr);
+							//去重,生成不包括已含index的要打开cell数组
+							openArr = removeOpenedIndex(openArr,openedArr);
+
+							// console.log(openArr,openedArr);
+
+							if (openArr.length == 0) {
+								return;
+							}
+
+							for (var i=0;i<openArr.length;i++) {
+								openCell(openArr[i],map);
+							}
+						}else {
+							//若周围有雷,得1分
+							getNewScore(1);
+						}
+
+						//显示得分
+						displayScore();
+					}
+
+					////计算方格周围8格的索引值
+					//计算方格周围8格的索引值
+					function createCellIndexArr(index,len) {
+						var cellIndexArr = [index-len-1,index-len,index-len+1,index-1,index,index+1,index+len-1,index+len,index+len+1];
+
+						var index = cellIndexArr[4];
+						var row = Math.floor(index / len);
+						var col = index % len;
+
+						var removeIndexArr = [];
+
+						//去除坏点
+						if (row == 0) {
+							removeIndexArr.push(0,1,2);
+						}
+
+						if (row == len-1) {
+							removeIndexArr.push(6,7,8);
+						}
+
+						if (col == 0) {
+							removeIndexArr.push(0,3,6);
+						}
+
+						if (col == len - 1) {
+							removeIndexArr.push(2,5,8);
+						}
+
+						removeIndexArr = removeArrRedundant(removeIndexArr).sort(function(a,b) {
+							return b - a;
+						});
+
+						for (var i=0;i<removeIndexArr.length;i++) {
+							cellIndexArr.splice(removeIndexArr[i],1);
+						}
+
+						//去除index本身
+						cellIndexArr.splice(getEleIndex(cellIndexArr,index),1);
+
+						return cellIndexArr;
+					}
+
+					//数组去重
+					function removeArrRedundant(arr) {
+						for (var i=0;i<arr.length;i++) {
+							for (var j=i+1;j<arr.length;j++)  {
+								if (arr[i] == arr[j]) {
+									arr.splice(j,1);
+									j--;
+								}
+							}
+						}
+
+						return arr;
+					}
+
+					//获得数组中某元素位置,找不到返回-1
+					function getEleIndex(arr,ele) {
+						for (var i=0;i<arr.length;i++) {
+							if (arr[i] == ele) {
+								return i;
+							}
+						}
+						return -1;
+					}
+					////计算方格周围8格的索引值结束
+					
+					function drawMap(map) {
+						var len = map.length;
+
+						for (var i=0;i<aCell.length;i++) {
+							var row = Math.floor(i / len);
+							var col = i % len;
+
+							if (map[row][col]) {
+								aCell[i].style.background = 'red';
+							}
+						}
+					}
+
+					function removeOpenedIndex(openArr,openedArr) {
+						for (var i=0;i<openArr.length;i++) {
+							if (getEleIndex(openedArr,openArr[i]) != -1) {
+								openArr.splice(i,1);
+								i--;
+							}
+						}
+
+						return openArr;
+					}
+
+					//将三位数以下数值固定位三位字符串,
+					//四位数以上归0
+					function fixThree(n) {
+						if (n < 10) {
+							return '00' + n;
+						}else if(n >= 100) {
+							return '' + n;
+						}else if(n >= 10 && n < 100) {
+							return '0' + n;
+						}else {
+							return '000';
+						}
+					}
+
+					function changeFace(imgIndex) {
+						oFace.style.background = 'url(mine_images/' + imgIndex + '.ico) no-repeat';
+						oFace.style.backgroundSize = '25px 25px';
+					}
+
+					function showPic() {
+						var bonusImgIndex = Math.ceil(Math.random()*3)
+						for (var i=0;i<aCell.length;i++) {
+							aCell[i].style.background = 'url(mine_images/bonus' + bonusImgIndex + '.jpg) no-repeat ' + -(i%9)*25 + 'px ' + -Math.floor(i/map.length)*25 + 'px';
+						}
+					}
+				}//function mine() end
+
+				function resize_Container_Header_MineField(numOfCol) {
+					//resize oMineField
+					oMineField.style.width = numOfCol * 25 + 'px';
+					oMineField.style.height = numOfCol * 25 + 'px';
+
+					//resize oContainer
+					oContainer.style.width = numOfCol * 30 + 'px';
+					oContainer.style.height = numOfCol < 15 ? numOfCol * 30 + 50 + 'px' : oContainer.style.height = numOfCol * 30 + 'px';
+
+					//resize oHeader
+					oHeader.style.width = numOfCol * 25 + 'px';
+					oFace.style.left = css(oHeader,'width') / 2 - 12 + 'px';
+
+					/////////////生成div网格样式//////////////
+					var str = '';
+					for (var i=0;i<numOfCol*numOfCol;i++) {
+						str += '<div style="left:' + (i % numOfCol) * 25 + 'px;top:' + Math.floor(i / numOfCol) * 25+'px;"></div>';
+					} 
+					oMineField.innerHTML = str;
+
+					return numOfCol;
+				}
+
+				//阻止oContainer内右击弹出菜单
+				function doNothing() {
+					window.event.returnValue = false;
+					return false;
+				}
+			};
+		</script>
+	</body>
+</html>

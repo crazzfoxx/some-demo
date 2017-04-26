@@ -1,0 +1,104 @@
+/*#context*/
+#context {
+	float: left;
+	clear: left;
+	width: 193px;
+	height: auto;
+	padding-top: 10px;
+}
+#context li {
+	position: relative;
+	width: 100%;
+	height: 38px;
+	cursor: pointer;
+}
+#context li:hover {
+	background: #e4e9ec;
+}
+#context .li-active {
+	background: #e4e9ec;
+	color: #3b8cff;
+}
+#context li > i {
+	margin: 11px 0 0 25px;
+}
+#context li > span {
+	position: absolute;
+	left: 53px;
+	display: inline-block;
+	height: 100%;
+	font-size: 14px;
+	font-family: "Microsoft Yahei";
+	line-height: 38px;
+}
+
+/*#context*/
+
+/*storage*/
+#storage {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 193px;
+	height: 91px;
+	padding: 13px 17px;
+}
+
+#storage .scroll {
+	width: 100%;
+	height: 8px;
+	border-radius: 4px;
+	background: #d8dce0;
+}
+#storage .scroll > .block {
+	width: 14px;
+	height: 100%;
+	border-radius: inherit;
+	background: #92ef55;
+}
+
+#storage > span {
+	display: block;
+	height: 33px;
+	font: 12px/33px "Microsoft Yahei";
+}
+#storage > span:first-of-type {
+	float: left;
+}
+#storage > span:last-of-type {
+	float: right;
+	color: #3b8cff;
+}
+
+#storage .links {
+	clear: left;
+	padding-left: 4px;
+}
+#storage .links > a {
+	display: block;
+	float: left;
+	position: relative;
+	width: 18px;
+	height: 24px;
+	cursor: pointer;
+	color: #ccc;
+}
+#storage .links > a:hover {
+	color: #424e67;
+}
+#storage .links > a:not(:last-of-type) {
+	margin-right: 27px;
+}
+#storage .links > a > i {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 16px;
+	height: 16px;
+	margin-left: -8px;
+	margin-top: -5px;
+}
+
+/*storage*/
+
+

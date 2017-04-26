@@ -1,0 +1,121 @@
+#markdownpad {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: -1200px;
+	z-index: 999;
+	width: 1000px;
+	height: 100%;
+	padding: 40px;
+}
+#markdownpad li {
+	list-style: square inside;
+}
+#markdownpad:before {
+	content : "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: -1;
+	margin: -30px;
+	background: rgba(0,0,0,.6);
+}
+#markdownpad:after {
+	content : "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: -2;
+	-webkit-filter: blur(4px);
+	margin: -30px;
+	background: url(../images/wrap_bg.jpg) no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+}
+#markdownpad .write {
+	float: right;
+	width: 45%;
+	height: 100%;
+	padding: 10px;
+	background: #fff;
+	word-break: break-all;
+}
+#markdownpad .show {
+	overflow: auto;
+	float: left;
+	width: 45%;
+	height: 100%;
+	padding: 10px;
+	font: 12px/18px "Microsoft Yahei";
+	word-break: break-all;
+	color: azure;
+	background: rgba(39,40,34,1);
+}
+.show .codeblock {
+	margin-left: 30px;
+	width: 240px;
+	min-height: 2em;
+	border-radius: 4px;
+	padding: 4px;
+	text-align: left;
+	line-height: 1em;
+	word-break: break-all;
+	background: #666;
+}
+.show blockquote:before {
+	content: "▎";
+	color: #ccc;
+}
+/*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
+.show::-webkit-scrollbar,
+.write::-webkit-scrollbar {
+	width: 8px;
+	height: auto;
+}
+/*定义滚动条的轨道，内阴影及圆角*/
+.show::-webkit-scrollbar-track,
+.write::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    border-radius: 2px;
+    background-color: #f5f6f9;
+}
+/*定义滑块，内阴影及圆角*/
+.show::-webkit-scrollbar-thumb,
+.write::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #383639;
+}
+#markdownpad .btns {
+	width: 60px;
+	height: 300px;
+	position: absolute;
+	top: 0;
+	right: -60px;
+	cursor: pointer;
+}
+#markdownpad .btns > span {
+	display: block;
+	width: 100%;
+	height: 50%;
+	padding-top: 38px;
+	border-radius: 0 16px 16px 0;
+	font: 20px/24px "Microsoft Yahei";
+	text-align: center;
+	background: #383639;
+	color: #fff;
+}
+#markdownpad .btns > span:last-of-type {
+	margin-top: -40px;
+}
+#markdownpad .btns > span.active {
+	background:  #181A19;
+	z-index: 1002;
+}
+
+
+

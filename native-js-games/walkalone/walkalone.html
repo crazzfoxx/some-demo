@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>walk alone</title>
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/loading.css">
+		<link rel="stylesheet" href="css/wrapper.css">
+		<link rel="stylesheet" href="css/areas.css">
+		<link rel="stylesheet" href="css/game-area.css">
+		<link rel="stylesheet" href="css/music.css">
+		<link rel="stylesheet" href="css/event-layer.css">
+	</head>
+	<body>
+		<!-- 开场页面 -->
+		<div id="loading">
+			<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
+				<symbol id="text">
+					<text x="24%" y="40%" class="text">Walk</text>
+					<text x="24%" y="75%" class="text">Alone</text>
+				</symbol>
+
+				<g>
+				<use xlink:href="#text"
+				  class="use-text"></use>
+				  <use xlink:href="#text"
+				    class="use-text"></use>
+				    <use xlink:href="#text"
+				      class="use-text"></use>
+				      <use xlink:href="#text"
+				        class="use-text"></use>
+				        <use xlink:href="#text"
+				          class="use-text"></use>
+				</g>
+			</svg>
+			<div class="wall">
+				<div class="logo">RADIATOR INDUSTURY</div>	
+				<div class="ball"></div>
+			</div>
+			<div class="hint">[按回车继续]</div>
+		</div>
+
+		<!-- 游戏界面 -->
+		<div id="wrapper">
+			<!-- 武器栏 -->
+			<div id="weapon-area">
+				<div class="box">
+					<div class="heading">我的武器</div>
+					<ul class="weapon-list">
+						<!-- <li>10mm手枪(11)</li>
+						<li>10mm反射瞄准器</li>
+						<li>DC守卫左臂甲(2)</li>
+						<li>DC防卫重型头盔</li> -->
+					</ul>
+					<span class="load">0/100</span>
+				</div>
+			</div>
+
+			<!-- 道具栏 -->
+			<div id="pack-area">
+				<div class="box">
+					<div class="heading">我的道具</div>
+					<ul class="pack-list">
+						<!-- <li>10mm手枪(11)</li>
+						<li>10mm反射瞄准器</li>
+						<li>DC守卫左臂甲(2)</li>
+						<li>DC防卫重型头盔</li> -->
+					</ul>
+					<span class="load">0/100</span>
+				</div>
+			</div>
+
+			<!-- 游戏栏 -->
+			<div id="game-area">
+				<div class="round">20</div>
+				<div class="state-area">
+					<div class="overallhealth">
+						<canvas id="move" width="120" height="78"></canvas>
+					</div>
+					<div class="health">
+						<span class="head">头部 100</span>
+						<span class="shoulder">肩膀 100</span>
+						<span class="arm">手臂 100</span>
+						<span class="body">身体 100</span>
+						<span class="leg">腿 100</span>
+					</div>
+					<div class="battle">
+						<span class="attack">ATK 0</span>
+						<span class="defend">DEF 0</span>
+						<span class="agility">AGI 0</span>
+						<span class="mood">MOD 100</span>
+						<span class="thirsty">TST 0</span>
+						<span class="hungury">HGR 0</span>
+					</div>
+					<div class="overall"></div>
+					<div class="timecount">15:08</div>
+					<div class="nukacola">0</div>
+					<div class="loading-bar">APPROACH TO DAY <strong>0</strong></div>
+				</div>
+				<div class="info-area">
+					<div class="equipment">
+						<div class="avatar">PLAYER</div>
+						<div class="helmet">HELMET</div>
+						<div class="armor">ARMOR</div>
+						<div class="weapon">WEAPON</div>
+					</div>
+					<div class="screen">
+						<div class="show"></div>
+						<div class="text">
+							呲...呲...呲...无线联络器发出毫无意义的电信号声,你试图从中听到些什么,但是这些尝试显然是徒劳无功的...
+						</div>
+					</div>
+					<div class="btn">
+						<div>确定</div>
+						<div>取消</div>
+					</div>
+				</div>
+				<div class="card-area">
+					<div class="card">
+						<div class="card-front"></div>
+						<div class="card-back"></div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 搜刮栏 -->
+			<div id="loot-area">
+				<div class="box">
+					<div class="heading">搜刮</div>
+					<ul class="loot-list"></ul>
+				</div>
+			</div>
+
+			<!-- 右键菜单 -->
+			<div class="rightClickMenu">
+				<ul>
+					<li>拾取</li>
+					<li>使用</li>
+					<li>装备</li>
+					<li>卸下</li>
+					<li>丢弃</li>
+				</ul>
+			</div>
+			
+			<!-- 音乐播放器 -->
+			<div class="warp-music">
+			    <div class="music1">
+			        <span class="prev"></span>
+			        <span class="next"></span>
+			        <span class="play"></span>
+			        <span class="option glyphicon glyphicon-option-vertical"></span>
+			    </div>
+			    <audio class="audio1" src=""></audio>
+			    <audio class="audio2" src="music-list/fallout-main.mp3" autoplay="autoplay" loop></audio>
+			    <div class="music2">
+			        <div class="main">
+			            <div class="lrc">
+			                <div class="lrcCon"></div>
+			            </div>
+			            <!--<div class="person"></div>-->
+			            <canvas id="canvas" width="200" height="200"></canvas>
+			            <div class="menu">
+			                <div class="close"></div>
+			                <div class="progress">
+			                    <div class="current">00:00</div>
+			                    <div class="bar">
+			                        <div class="done">
+
+			                        </div>
+			                        <div class="btn"></div>
+			                    </div>
+			                    <div class="duration">00:00</div>
+			                </div>
+			                <div class="volume">音量</div>
+			            </div>
+			            <div class="menuMark"></div>
+			        </div>
+
+			    </div>
+			    <div class="optionMain">
+			        <div class="back"></div>
+			        <div class="sound">
+			            <div class="bar">
+			                <div class="btn"></div>
+			            </div>
+			        </div>
+			        <div class="optionMusic">
+			            <div class="bar">
+			                <div class="btn"></div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+
+			<!-- 事件层 -->
+			<div class="event-layer">
+				<div class="event-box">
+					<div class="event-show"></div>
+					<div class="text"></div>
+					<div class="event-confirm">确定</div>
+					<div class="event-leave">离开</div>
+					<div class="event-refuse">拒绝</div>
+				</div>
+			</div>
+
+			<!-- svg绘制 -->
+			<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
+				<!-- 绘制左侧边框 -->
+				<g>
+					<polyline points="16,39 16,14 33,14" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+				<g>
+					<polyline points="162,14 326,14 326,39" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+				<g>
+					<polyline points="16,252 16,292 326,292 326,252" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+
+				<g>
+					<polyline points="16,346 17,321 33,321" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+				<g>
+					<polyline points="162,321 326,321 326,346" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+				<g>
+					<polyline points="16,559 16,599 326,599 326,559" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+				<!-- 绘制左侧边框 -->
+				<!-- 绘制显示器 -->
+				<g>
+					<rect x="445" y="15" width="470" height="80" style="fill:#093f0b;stroke:#000;stroke-width:0;fill-opacity:.5;stroke-opacity:1">
+				</g>
+				<g>
+					<rect x="440" y="99" width="120" height="16" style="fill:#093f0b;stroke:#000;stroke-width:0;fill-opacity:.5;stroke-opacity:1">
+				</g>
+				<g>
+					<rect x="565" y="99" width="120" height="16" style="fill:#093f0b;stroke:#000;stroke-width:0;fill-opacity:.5;stroke-opacity:1">
+				</g>
+				<g>
+					<rect x="690" y="99" width="230" height="16" style="fill:#093f0b;stroke:#000;stroke-width:0;fill-opacity:.5;stroke-opacity:1">
+				</g>
+				 <text x="776" y="20" style="fill:#35bd33;font-size:24px;font-family:SimHei;">状态</text>
+				<g>
+					<polyline points="443,18 443,13 770,13 770,8 775,8" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+				<g>
+					<polyline points="824,8 829,8 829,13 916,13 916,18" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+
+				<!-- 绘制显示器 -->
+
+				<!-- 绘制screen -->
+				<g>
+					<polyline points="363,567 363,557 380,557" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+				<g>
+					<polyline points="439,587 449,587 449,577" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+				<g>
+					<polyline points="466,576 466,586 476,586" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+				<g>
+					<polyline points="544,557 552,557 552,586 548,586" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+				<!-- 绘制screen -->
+
+				<!-- 绘制右侧区域 -->
+				<g>
+					<polyline points="1040,20 1040,14 1050,14" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+				<g>
+					<polyline points="1040,450 1040,599 1050,599" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+				<g>
+					<polyline points="1320,599 1349,599 1349,590" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+				<g>
+					<polyline points="1180,14 1349,14 1349,30" style="fill:none;stroke:#35bd33;stroke-width:2">
+				</g>
+				<!-- 绘制右侧区域 -->
+			</svg>
+		</div>
+
+		<script src="script/data.js"></script>
+		<script src="script/js_libs.js"></script>
+		<script src="script/tool.js"></script>
+		<!-- <script src="script/main.js"></script> -->
+		<script src="script/main_for_modify.js"></script>
+	</body>
+</html>

@@ -1,0 +1,162 @@
+/*#weapon-area #pack-area*/
+#weapon-area {
+	left: 0;
+	top: 0;
+	width: 342px;
+	height: 307px;
+}
+#pack-area {
+	left: 0;
+	top: 307px;
+	width: 342px;
+	height: 307px;
+}
+#weapon-area .box,
+#pack-area .box {
+	position: relative;
+	width: 90%;
+	height: 90%;
+	margin: 15px auto;
+	background: rgba(25,53,27,.6);
+}
+#weapon-area .heading,
+#pack-area .heading {
+	position: absolute;
+	top: -15px;
+	left: 20px;
+	width: 155px;
+	height: 30px;
+	font: 24px/30px SimHei;
+	color: #35bd33;
+}
+#weapon-area .weapon-list,
+#pack-area .pack-list {
+	overflow: auto;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 90%;
+}
+#weapon-area .weapon-list li,
+#pack-area .pack-list li {
+	width: 90%;
+	height: 30px;
+	padding-left: 50px;
+	margin: 0 auto;
+	font: 16px/30px SimHei;
+	color: #35bd33;
+	cursor: pointer;
+}
+#weapon-area .weapon-list li:hover,
+#pack-area .pack-list li:hover {
+	background: url(../images/li-active-bg.png) no-repeat;
+	color: #000;
+}
+#weapon-area .load,
+#pack-area .load {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	display: block;
+	height: 16px;
+	padding: 0 20px;
+	font: 700 16px/16px SimHei;
+	color: #35bd33;
+	background: url(../images/area-load-bg.png) no-repeat;
+}
+
+/*#weapon-area #pack-area*/
+
+/*#loot-area*/
+#loot-area {
+	left: 1024px;
+	top: 0;
+	width: 342px;
+	height: 614px;
+	/*background: rgba(255,0,0,.4);*/
+}
+
+#loot-area .box {
+	position: relative;
+	width: 90%;
+	height: 95%;
+	margin: 15px auto;
+	background: rgba(25,53,27,.6);
+}
+#loot-area .heading {
+	position: absolute;
+	top: -15px;
+	left: 20px;
+	width: 155px;
+	height: 30px;
+	font: 24px/30px SimHei;
+	color: #35bd33;
+}
+#loot-area .loot-list {
+	/*overflow: auto;*/
+	box-sizing: border-box;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 90%;
+	padding: 4px 4px 4px 15px;
+}
+#loot-area .loot-list > dl {
+	float: left;
+	width: 100px;
+	min-height: 100px;
+	margin: 10px 20px;
+	cursor: pointer;
+}
+#loot-area .loot-list > dl dt {
+	width: 100%;
+	min-height: 80px;
+	border-radius: 4px;
+	background: url(../images/loot/gun-3.png) no-repeat center center;
+}
+#loot-area .loot-list > dl dd {
+	font: 12px/20px SimHei;
+	text-align: center;
+	color: #35bd33;
+}
+#loot-area .loot-list > dl:hover {
+	background: rgba(0,0,0,.4);
+	box-shadow: 0 0 14px 14px rgba(0,0,0,.4);
+}
+
+/*#loot-area*/
+
+/*rightClickMenu*/
+.rightClickMenu {
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100px;
+}
+.rightClickMenu ul {
+	width: 100%;
+	height: 100%;
+	border: 4px solid #000;
+	background: #0f1f10;
+}
+.rightClickMenu ul > li {
+	width: 100%;
+	height: 20px;
+	font: 16px/18px SimHei;
+	text-align: center;
+	color: #35bd33;
+	cursor: pointer;
+}
+.rightClickMenu ul > li:hover {
+	background: #35bd33;
+	color: #fff;
+}
+
+.rightClickMenu ul > li:not(:last-of-type) {
+	border-bottom: 2px solid #000;
+}
+/*rightClickMenu*/
+

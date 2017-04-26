@@ -1,0 +1,41 @@
+/*css reset*/
+body,
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+li { list-style: none; }
+
+img {
+    outline: none;
+    border: none;
+}
+
+/* .list */
+.list {
+    width: 950px;
+    margin: 50px auto 0;
+}
+
+.list > li {
+    float: left;
+    width: 230px;
+    margin-right: 10px;
+    /*margin-bottom: 10px;*/
+}
+
+.list > li:nth-of-type(4n) {
+    margin-right: 0;
+}
+
+.list > li div {
+    margin-bottom: 10px;
+    padding: 4px;
+    border: 1px solid #666;
+}
+
+.list > li div img {
+    display: block;
+    width: 220px;
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>lazyload</title>
+    <style>
+        img {
+            display: block;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <!-- <img src="" alt="" class="lazy" data-origin=""> -->
+    <script src="scripts/jquery-3.1.1.js"></script>
+    <script src="scripts/jquery.lazyload.js"></script>
+    <script>
+        $.ajax({
+            url: 'php/getPics.php',
+            data: 'cpage=1'
+        }).done(function(d) {
+            var datas = JSON.parse(d);
+            for (var i=0,len=datas.length;i<len;i++) {
+                var cData = datas[i],
+                    cURL = cData.preview,
+                    cWidth = 300,
+                    cHeight = cData.height * 300 / cData.width;
+                $('<img/>')
+                    .attr({
+                        'class': 'lazy',
+                        'data-original': cURL,
+                        'width': cWidth,
+                        'height': cHeight
+                    })
+                    .appendTo($('body'))
+                    .lazyload({
+                        placeholder: 'loading.gif'
+                    });
+            }
+        });
+    </script>
+</body>
+</html>

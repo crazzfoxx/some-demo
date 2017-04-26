@@ -1,0 +1,31 @@
+body,
+ul,
+input,
+dl,
+dd,
+dt,
+p {
+	margin: 0;
+	padding: 0;
+}
+li {
+	list-style: none;
+}
+input,
+textarea {
+	border: none;
+	background: none;
+	outline: none;
+}
+textarea {
+	resize: none;
+}
+
+a {
+	text-decoration: none;
+	outline: none;
+}
+
+* {
+	box-sizing: border-box;
+}

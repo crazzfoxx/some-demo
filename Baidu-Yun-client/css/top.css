@@ -1,0 +1,273 @@
+/*#top-logo*/
+#top-logo {
+	display: block;
+	float: left;
+	width: 193px;
+	height: 62px;
+	background: url(../images/top/logo_1.png) no-repeat 20px 15px;
+}
+
+/*#top-logo*/
+
+/*#header*/
+#header {
+	float: left;
+	width: 267px;
+	height: 62px;
+}
+#header > a {
+	float: left;
+	width: 89px;
+	height: 62px;
+	font-size: 16px;
+	font-family: "Microsoft Yahei";
+	line-height: 62px;
+	text-align: center;
+	cursor: pointer;
+	color: #424e67; 
+}
+#header > .header-active {
+	color: #3b8cff;
+	background: url(../images/top/header_bg.png) no-repeat 27px 49px;
+}
+
+/*#header*/
+
+
+/*#user*/
+#user {
+	float: right;
+	width: 596px;
+	height: 62px;
+	margin-right: 10px;
+}
+
+#user * {
+	float: left;
+	height: 62px;
+}
+
+#user .header-advertise > a {
+	width: 119px;
+	font-size: 12px;
+	line-height: 62px;
+	text-align: center;
+	color: #f59c99;
+	text-decoration: underline;
+}
+
+#user .userinfo {
+	position: relative;
+	width: 172px;
+}
+#user .userinfo .avatar {
+	width: 33px;
+	height: 33px;
+	margin-top: 15px;
+	border: 2px solid #ccc;
+	border-radius: 50%;
+	background: url(../images/top/avatar.jpg) no-repeat;
+	background-size: cover;
+}
+.userinfo .username {
+	display: block;
+	width: 88px;
+	padding-left: 11px;
+	font-size: 12px;
+	line-height: 62px;
+	text-align: center;
+}
+
+.userinfo .level {
+	position: relative;
+	width: 30px;
+}
+.userinfo .arrow {
+	position: relative;
+	width: 19px;
+}
+#user .userinfo .level > i,
+#user .userinfo .arrow > i {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 16px;
+	height: 16px;
+	margin-left: -8px;
+	margin-top: -8px;
+}
+
+.header-notice {
+	width: 305px;
+	padding-left: 32px;
+	background: url(../images/top/head-notice-bg.png) no-repeat;
+}
+
+.header-notice > a {
+	cursor: pointer;
+	color: #424e67;
+}
+
+.header-notice > a:not(:last-of-type):hover {
+	opacity: .5;
+}
+
+.header-notice .download {
+	width: 60px;
+	margin-right: 10px;
+	font: 12px/62px "Microsoft Yahei";
+	text-align: center;
+}
+
+.header-notice .system-notice,
+.header-notice .feedback,
+.header-notice .skin {
+	position: relative;
+	width: 36px;
+}
+.header-notice .system-notice > i,
+.header-notice .feedback > i,
+.header-notice .skin > i {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -8px;
+	margin-top: -8px;
+}
+
+#user .header-notice .smash {
+	overflow: hidden;
+	float: right;
+	width: 78px;
+	height: 27px;
+	margin-top: 17px;
+	border-radius: 4px;
+	font: 12px/27px "Microsoft Yahei";
+	text-align: center;
+	color: #fff;
+	background: #ccc;
+}
+#user .header-notice .smash:before {
+	content: "smash it";
+}
+
+#user .header-notice .smash:hover {
+	font: 700 24px/27px "Vardana";
+	background: #000;
+	color: #ff0000;
+}
+
+/*.pop*/
+#user .pop {
+	display: none;
+	position: absolute;
+	top: 75px;
+	left: 0;
+	z-index: 98;
+	width: 241px;
+	height: auto;
+	border-radius: 4px;
+	font: 12px "Microsoft Yahei";
+	color: #000;
+	background: #fff;
+	box-shadow: 2px 2px 15px 2px rgba(0,0,0,.4);
+}
+#user .pop-header {
+	position: relative;
+	width: 100%;
+	height: 90px;
+	border-radius: 4px 4px 0 0;
+	padding: 20px 15px;
+	background: #3a84e3;
+}
+#user .pop-header > .trangle {
+	position: absolute;
+	top: -20px;
+	left: 25px;
+	width: 0px;
+	height: 0px;
+	border: 10px solid transparent;
+	border-bottom-color: #3a84e3;
+}
+#user .pop-header .pop-avater {
+	width: 50px;
+	height: 50px;
+	border: 2px solid #287acc;
+	border-radius: 50%;
+	background: url(../images/top/avatar.jpg) no-repeat;
+	background-size: cover;
+}
+#user .pop-header .pop-username {
+	width: 89px;
+	height: 49px;
+	padding-left: 10px;
+	font: 12px/49px "Microsoft Yahei";
+	text-align: center;
+	color: #fff;
+}
+
+#user .pop-member {
+	width: 100%;
+	height: 60px;
+	padding: 18px 12px;
+}
+#user .pop-member > span {
+	display: inline-block;
+	height: 20px;
+}
+#user .pop-member > span {
+	line-height: 20px;
+}
+#user .pop-member > span:last-of-type {
+	float: right;
+	width: auto;
+	padding: 0 11px;
+	border-radius: 4px;
+	background: #3a84e3;
+}
+#user .pop-member a {
+	color: #fff;
+}
+
+#user .pop-func {
+	width: 100%;
+	height: 32px;
+	margin-bottom: 15px;
+	cursor: pointer;
+}
+
+#user .pop-func > span {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	margin-left: 24px;
+}
+
+#user .pop-func > span:nth-of-type(1) {
+	background: url(../images/top/top-note.png) no-repeat;
+}
+#user .pop-func > span:nth-of-type(2) {
+	background: url(../images/top/top-email.png) no-repeat;
+}
+#user .pop-func > span:nth-of-type(3) {
+	background: url(../images/top/top-structure.png) no-repeat;
+}
+#user .pop-func > span:nth-of-type(4) {
+	background: url(../images/top/top-setting.png) no-repeat;
+}
+
+#user .pop-list {
+	overflow: hidden;
+	width: 100%;
+	height: 105px;
+}
+#user .pop-list li {
+	width: 100%;
+	height: 35px;
+	padding-left: 12px;
+	font: 12px/35px "Microsoft Yahei";
+}
+
+/*.pop*/
+
+/*#user*/

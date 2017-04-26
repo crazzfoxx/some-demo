@@ -1,0 +1,267 @@
+<!--
+ver 2 of blackwhite5
+美化棋盘棋子
+ -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>js_3</title>
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+			}
+			
+			.chessbord_bg {
+				position: relative;
+				width: 640px;
+				height: 604px;
+				margin: 0 auto;
+				background: url(images/chessboard_bg.png) no-repeat;
+			}
+			.map {
+				position: absolute;
+				top: 17px;
+				left: 16px;
+			}
+			.map > div {
+				box-sizing: border-box;
+				position: absolute;
+
+				width: 28px;
+				height: 28px;
+				/*border: 1px solid #000;*/
+				border-radius: 50%;
+
+				background: none;
+				opacity: 0;
+				cursor: pointer;
+			}
+			.map > .black {
+				background: url(images/black_chess.png) no-repeat;
+			}
+			.map > .white {
+				background: url(images/white_chess.png) no-repeat;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="chessbord_bg">
+			<div class="map"></div>
+		</div>
+		<script>
+			///////////////变量声明////////////////////
+			var oMap = document.getElementsByClassName('map')[0];
+			var aDiv = oMap.getElementsByTagName('div');
+
+			///////////////HTML生成////////////////////
+			var chess_len = 19;
+			var str = '';
+			for (var i=0;i<chess_len*chess_len;i++) {
+				str += '<div style="left:'+30*(i%chess_len)+'px;top:'+30*Math.floor(i/chess_len)+'px"></div>';
+			}
+			oMap.innerHTML = str;
+
+			///////////////执行////////////////////
+			
+			//初始化二维布尔数组
+			//与aDiv一一对应
+			var boolmap = new Array();
+			for (var i=0;i<chess_len;i++) {
+				boolmap[i] = new Array();
+
+				for (var j=0;j<chess_len;j++) {
+					boolmap[i][j] = null;
+				}
+			}
+			
+			////落子判断是否胜利
+			//初始化player
+			oMap.isBlack = true;
+
+			for (var i=0;i<aDiv.length;i++) {
+				aDiv[i].index = i;
+				aDiv[i].onOff = true;
+
+				aDiv[i].onclick = function() {
+					if (this.onOff) {
+						this.style.opacity = '1';
+						if (oMap.isBlack) {
+							this.className = 'black';
+							boolmap[Math.floor(this.index / chess_len)][this.index % chess_len] = true;
+
+							//判断黑子是否获胜
+							if(continuousFive(this,boolmap,oMap.isBlack)) {
+								alert('黑棋胜利!!');
+							};
+						}else {
+							this.className = 'white';
+							boolmap[Math.floor(this.index / chess_len)][this.index % chess_len] = false;
+
+							//判断白子是否获胜
+							if(continuousFive(this,boolmap,oMap.isBlack)) {
+								alert('白棋胜利!!');
+							};
+						}
+						oMap.isBlack = !oMap.isBlack ;
+					}
+					this.onOff = false;
+				};
+			}
+
+			///////////////函数声明////////////////////
+
+			//判断落子纵向是否五连
+			function continuousFive(odiv,boolmap,isBlack) {
+				//将odiv映射到boolmap上
+				var row = Math.floor(odiv.index / chess_len);
+				var col = odiv.index % chess_len;
+				var player = null;
+				//初始化判断变量
+				var ref = 0;
+
+				//玩家判断
+				if (isBlack) {
+					player = true;
+				}else{
+					player = false;
+				}
+
+				horizontal: {
+					init();
+
+					//循环记录上方连子
+					while (boolmap[row][col] === player) {
+						ref++;
+						row--;
+						if (row < 0) {
+							break;
+						}
+					}
+
+					//循环记录下方连子
+					changeDir();
+
+					while (boolmap[row][col] === player) {
+						ref++;
+						row++;
+						if (row > chess_len - 1) {
+							break;
+						}
+					}
+
+
+					//五连子返回true
+					if (ref == 6) {
+						return true;
+					}
+				}
+
+				vertical: {
+					init();
+
+					//循环记录左方连子
+					while (boolmap[row][col] === player) {
+						ref++;
+						col--;
+						if (col < 0) {
+							break;
+						}
+					}
+
+					//循环记录右方连子
+					changeDir();
+
+					while (boolmap[row][col] === player) {
+						ref++;
+						col++;
+						if (col > chess_len - 1) {
+							break;
+						}
+					}
+
+					//五连子返回true
+					if (ref == 6) {
+						return true;
+					}
+				}
+
+				leftCross: {
+					init();
+
+					//循环记录左上方连子
+					while (boolmap[row][col] === player) {
+						ref++;
+						col--;
+						row--;
+						if (row < 0 || col < 0) {
+							break;
+						}
+					}
+
+					//循环记录右下方连子
+					changeDir();
+
+					while (boolmap[row][col] === player) {
+						ref++;
+						col++;
+						row++;
+						if (row > chess_len - 1 || col > chess_len - 1) {
+							break;
+						}
+					}
+
+					//五连子返回true
+					if (ref == 6) {
+						return true;
+					}
+				}
+
+				rightCross: {
+					init();
+
+					//循环记录左上方连子
+					while (boolmap[row][col] === player) {
+						ref++;
+						col++;
+						row--;
+						if (row < 0 || col > chess_len - 1) {
+							break;
+						}
+					}
+
+					//循环记录右下方连子
+					changeDir();
+
+					while (boolmap[row][col] === player) {
+						ref++;
+						col--;
+						row++;
+						if (row > chess_len - 1 || col < 0) {
+							break;
+						}
+					}
+
+					//五连子返回true
+					if (ref == 6) {
+						return true;
+					}
+				}
+
+				function init() {
+					//初始化
+					row = Math.floor(odiv.index / chess_len);
+					col = odiv.index % chess_len;
+					ref = 0;
+				}
+
+				function changeDir() {
+					//初始化行列，准备换方向计算
+					row = Math.floor(odiv.index / chess_len);
+					col = odiv.index % chess_len;
+				}
+			}
+		</script>
+	</body>
+</html>
